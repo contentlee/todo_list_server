@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import { TodoRoute } from "@routes";
 import Database from "@libs/database";
+import ErrorController from "./controllers/errors";
 
 class App {
   private app: Express;
@@ -41,6 +42,9 @@ class App {
   initRoutes() {
     const todoRouter = new TodoRoute();
     this.app.use(todoRouter.router);
+
+    this.app.use(ErrorController.log);
+    this.app.use(ErrorController.error);
   }
 
   listen() {
