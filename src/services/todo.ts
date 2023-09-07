@@ -1,68 +1,66 @@
-import "module-alias/register";
-
-import { ObjectId } from "mongodb";
-import { BaseModel } from "@models";
-
-interface Todo {
-  date: string;
-  title: string;
-  content: string;
-  place: {
-    marker: string;
-    name: string;
-    lat: number;
-    lng: number;
-  };
-  category: string;
-  isCompleted: boolean;
-  isHeld: boolean;
-  writeDate: string;
-  editDate: string;
-}
+import { CountModel, TodoModel } from "@models";
+import { makeOneDay } from "@utils/date";
+import { PreOptionalTodo, PreReqTodo } from "@utils/types";
 
 class TodoService {
-  private model = new BaseModel("todo");
+  todo = new TodoModel();
+  count = new CountModel("todo_count");
 
-  public getTodo(id: string) {
-    return this.model.getCollection().findOne({ id: parseInt(id) });
+  public getTodo(date: string, id: string) {
+    const [startDate, endDate] = makeOneDay(date);
+    return this.todo.getTodo(startDate, endDate, parseInt(id));
   }
 
   public getTodos(date: string) {
-    return this.model.getCollection().find({ date: date });
+    const [startDate, endDate] = makeOneDay(date);
+    return this.todo.getTodos(startDate, endDate);
   }
 
-  public createTodo(id: Number, todo: Todo) {
-    return this.model.getCollection().insertOne({ id, ...todo });
+  public async createTodo(todo: PreReqTodo) {
+    const date = new Date(todo.date);
+    const tmp = {
+      ...todo,
+      date,
+      edit_date: new Date(),
+      write_date: new Date(),
+    };
+
+    return await this.count
+      .getCount()
+      .then(async (data) => {
+        if (!data) throw new Error("id값을 찾지 못했습니다.");
+        return await this.count
+          .increaseCount()
+          .then(() => this.todo.createTodo(data.count + 1, tmp))
+          .catch(() => {
+            throw new Error("id값 생성에 실패했습니다.");
+          });
+      })
+      .catch(() => {
+        throw new Error("id값을 찾지 못했습니다.");
+      });
   }
 
-  public completeTodo(id: string, isCompleted: boolean) {
-    return this.model.getCollection().updateOne(
-      { id: parseInt(id) },
-      {
-        $set: {
-          is_completed: isCompleted,
-        },
-      }
-    );
-  }
+  public editTodo(id: string, todo: PreOptionalTodo) {
+    const tmp = {
+      edit_date: new Date(),
+      ...todo,
+    };
 
-  public holdTodo(id: string, isHeld: boolean) {
-    return this.model.getCollection().updateOne(
-      { id: parseInt(id) },
-      {
-        $set: {
-          is_held: isHeld,
-        },
-      }
-    );
-  }
-
-  public editTodo(id: string, todo: Todo) {
-    return this.model.getCollection().updateOne({ id: parseInt(id) }, { $set: { edit_date: new Date() } });
+    return this.todo.editTodo(parseInt(id), tmp);
   }
 
   public deleteTodo(id: string) {
-    return this.model.getCollection().deleteOne({ _id: new ObjectId(id) });
+    return this.todo.deleteTodo(parseInt(id));
+  }
+
+  public changeStatus(url: string, id: string, val: boolean) {
+    const cond = url.split("/")[0];
+    if (cond === "hold") {
+      return this.todo.holdTodo(parseInt(id), val);
+    } else {
+      return this.todo.completeTodo(parseInt(id), val);
+    }
   }
 }
 
