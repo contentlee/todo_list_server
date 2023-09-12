@@ -4,14 +4,14 @@ import { ReqEditTodo, ReqTodo } from "@utils/types";
 class TodoModel {
   private model = new BaseModel("todo");
 
-  public getTodo(startDate: Date, endDate: Date, id: number) {
-    return this.model.getCollection().findOne({ date: { $gte: startDate, $lt: endDate }, id });
+  public getTodo(startDate: Date, endDate: Date, id: number, email: string) {
+    return this.model.getCollection().findOne({ date: { $gte: startDate, $lt: endDate }, id, email });
   }
 
-  public getTodos(startDate: Date, endDate: Date) {
+  public getTodos(startDate: Date, endDate: Date, email: string) {
     return this.model
       .getCollection()
-      .find({ date: { $gte: startDate, $lt: endDate } })
+      .find({ date: { $gte: startDate, $lt: endDate }, email })
       .toArray();
   }
 
@@ -19,9 +19,9 @@ class TodoModel {
     return this.model.getCollection().insertOne({ id, ...todo });
   }
 
-  public completeTodo(id: number, isCompleted: boolean) {
+  public completeTodo(id: number, isCompleted: boolean, email: string) {
     return this.model.getCollection().updateOne(
-      { id },
+      { id, email },
       {
         $set: {
           is_completed: isCompleted,
@@ -31,9 +31,9 @@ class TodoModel {
     );
   }
 
-  public holdTodo(id: number, isHeld: boolean) {
+  public holdTodo(id: number, isHeld: boolean, email: string) {
     return this.model.getCollection().updateOne(
-      { id },
+      { id, email },
       {
         $set: {
           is_completed: false,
@@ -44,11 +44,11 @@ class TodoModel {
   }
 
   public editTodo(id: number, todo: ReqEditTodo) {
-    return this.model.getCollection().updateOne({ id }, { $set: { ...todo } });
+    return this.model.getCollection().updateOne({ id, email: todo.email }, { $set: { ...todo } });
   }
 
-  public deleteTodo(id: number) {
-    return this.model.getCollection().deleteOne({ id });
+  public deleteTodo(id: number, email: string) {
+    return this.model.getCollection().deleteOne({ id, email });
   }
 }
 

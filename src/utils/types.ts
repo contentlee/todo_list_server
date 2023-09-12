@@ -10,6 +10,8 @@ export interface BaseTodo {
     lng: number;
   };
   category: string;
+  name: string;
+  email: string;
 }
 
 export interface PreReqTodo extends BaseTodo {
@@ -34,6 +36,8 @@ export interface BaseEditTodo {
     lng: number;
   };
   category?: string;
+  name: string;
+  email: string;
 }
 export interface PreReqEditTodo extends BaseEditTodo {
   date?: string;

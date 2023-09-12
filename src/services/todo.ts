@@ -6,14 +6,14 @@ class TodoService {
   todo = new TodoModel();
   count = new CountModel("todo_count");
 
-  public getTodo(date: string, id: string) {
+  public getTodo(date: string, id: string, email: string) {
     const [startDate, endDate] = makeOneDay(date);
-    return this.todo.getTodo(startDate, endDate, parseInt(id));
+    return this.todo.getTodo(startDate, endDate, parseInt(id), email);
   }
 
-  public getTodos(date: string) {
+  public getTodos(date: string, email: string) {
     const [startDate, endDate] = makeOneDay(date);
-    return this.todo.getTodos(startDate, endDate);
+    return this.todo.getTodos(startDate, endDate, email);
   }
 
   public async createTodo(todo: PreReqTodo) {
@@ -53,16 +53,16 @@ class TodoService {
     return this.todo.editTodo(parseInt(id), tmp);
   }
 
-  public deleteTodo(id: string) {
-    return this.todo.deleteTodo(parseInt(id));
+  public deleteTodo(id: string, email: string) {
+    return this.todo.deleteTodo(parseInt(id), email);
   }
 
-  public changeStatus(url: string, id: string, body: { val: boolean }) {
+  public changeStatus(url: string, id: string, body: { val: boolean; email: string }) {
     const cond = url.split("/")[0];
     if (cond === "hold") {
-      return this.todo.holdTodo(parseInt(id), body.val);
+      return this.todo.holdTodo(parseInt(id), body.val, body.email);
     } else {
-      return this.todo.completeTodo(parseInt(id), body.val);
+      return this.todo.completeTodo(parseInt(id), body.val, body.email);
     }
   }
 }

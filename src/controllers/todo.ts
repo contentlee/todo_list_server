@@ -7,7 +7,7 @@ class TodoController {
   public getTodo = (req: Request, res: Response, next: NextFunction) => {
     try {
       this.service
-        .getTodo(req.params.date, req.params.id)
+        .getTodo(req.params.date, req.params.id, req.body.email)
         .then((data) => res.status(200).json({ message: "데이터를 가져오는데 성공하였습니다.", data }))
         .catch((err) => res.status(403).json({ message: "데이터를 가져오는데 실패했습니다." }));
     } catch (err) {
@@ -18,7 +18,7 @@ class TodoController {
   public getTodos = (req: Request, res: Response, next: NextFunction) => {
     try {
       this.service
-        .getTodos(req.params.date)
+        .getTodos(req.params.date, req.body.email)
         .then((data) => res.status(200).json({ message: "데이터를 가져오는데 성공하였습니다.", data }))
         .catch((err) => res.status(403).json({ message: "데이터를 가져오는데 실패했습니다." }));
     } catch (err) {
@@ -39,9 +39,8 @@ class TodoController {
 
   public editTodo = (req: Request, res: Response, next: NextFunction) => {
     try {
-      const todo = req.body;
       this.service
-        .editTodo(req.params.id, todo)
+        .editTodo(req.params.id, req.body)
         .then(() => res.status(200).json({ message: "데이터 변경에 성공하였습니다." }))
         .catch((err) => res.status(403).json({ message: "데이터 변경에 실패했습니다." }));
     } catch (err) {
@@ -52,7 +51,7 @@ class TodoController {
   public deleteTodo = (req: Request, res: Response, next: NextFunction) => {
     try {
       this.service
-        .deleteTodo(req.params.id)
+        .deleteTodo(req.params.id, req.body.email)
         .then(() => res.status(200).json({ message: "데이터 삭제에 성공하였습니다." }))
         .catch((err) => res.status(403).json({ message: "데이터 삭제에 실패했습니다." }));
     } catch (err) {
