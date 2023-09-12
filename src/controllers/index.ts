@@ -1,4 +1,6 @@
-import TodoController from "./todo";
 import ErrorController from "./errors";
+import LoginController from "./login";
+import TodoController from "./todo";
+import UserController from "./user";
 
-export { TodoController, ErrorController };
+export { ErrorController, LoginController, TodoController, UserController };

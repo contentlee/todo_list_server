@@ -1,5 +1,5 @@
 import { BaseModel } from "@models";
-import { OptionalTodo, ReqTodo } from "@utils/types";
+import { ReqEditTodo, ReqTodo } from "@utils/types";
 
 class TodoModel {
   private model = new BaseModel("todo");
@@ -43,7 +43,7 @@ class TodoModel {
     );
   }
 
-  public editTodo(id: number, todo: OptionalTodo) {
+  public editTodo(id: number, todo: ReqEditTodo) {
     return this.model.getCollection().updateOne({ id }, { $set: { ...todo } });
   }
 

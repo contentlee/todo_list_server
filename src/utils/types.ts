@@ -10,8 +10,6 @@ export interface BaseTodo {
     lng: number;
   };
   category: string;
-  is_completed: boolean;
-  is_held: boolean;
 }
 
 export interface PreReqTodo extends BaseTodo {
@@ -22,10 +20,11 @@ export interface ReqTodo extends BaseTodo {
   date: Date;
   edit_date: Date;
   write_date: Date;
+  is_completed: boolean;
+  is_held: boolean;
 }
 
-export interface PreOptionalTodo {
-  date?: Date;
+export interface BaseEditTodo {
   title?: string;
   content?: string;
   place?: {
@@ -35,11 +34,12 @@ export interface PreOptionalTodo {
     lng: number;
   };
   category?: string;
-  is_completed?: boolean;
-  is_held?: boolean;
 }
-
-export interface OptionalTodo {
+export interface PreReqEditTodo extends BaseEditTodo {
+  date?: string;
+}
+export interface ReqEditTodo extends BaseEditTodo {
+  date?: Date;
   edit_date: Date;
 }
 

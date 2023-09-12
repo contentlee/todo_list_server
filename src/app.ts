@@ -2,9 +2,9 @@ import express, { Express } from "express";
 import methodOverride from "method-override";
 import dotenv from "dotenv";
 
-import { TodoRoute } from "@routes";
+import { LoginRoute, TodoRoute, UserRoute } from "@routes";
+import { ErrorController } from "@controllers";
 import Database from "@libs/database";
-import ErrorController from "./controllers/errors";
 
 class App {
   private app: Express;
@@ -40,6 +40,9 @@ class App {
   }
 
   initRoutes() {
+    const loginRouter = new LoginRoute();
+    this.app.use(loginRouter.router);
+
     const todoRouter = new TodoRoute();
     this.app.use(todoRouter.router);
 

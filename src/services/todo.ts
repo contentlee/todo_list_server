@@ -1,6 +1,6 @@
 import { CountModel, TodoModel } from "@models";
-import { makeOneDay } from "@utils/date";
-import { PreOptionalTodo, PreReqTodo } from "@utils/types";
+import { makeOneDay, setStringToDate } from "@utils/date";
+import { PreReqEditTodo, PreReqTodo } from "@utils/types";
 
 class TodoService {
   todo = new TodoModel();
@@ -17,10 +17,12 @@ class TodoService {
   }
 
   public async createTodo(todo: PreReqTodo) {
-    const date = new Date(todo.date);
+    const date = setStringToDate(todo.date);
     const tmp = {
       ...todo,
       date,
+      is_held: false,
+      is_completed: false,
       edit_date: new Date(),
       write_date: new Date(),
     };
@@ -41,11 +43,12 @@ class TodoService {
       });
   }
 
-  public editTodo(id: string, todo: PreOptionalTodo) {
-    const tmp = {
+  public editTodo(id: string, todo: PreReqEditTodo) {
+    const tmp: any = {
       edit_date: new Date(),
       ...todo,
     };
+    if (tmp.date) tmp.date = setStringToDate(tmp.date);
 
     return this.todo.editTodo(parseInt(id), tmp);
   }
@@ -54,12 +57,12 @@ class TodoService {
     return this.todo.deleteTodo(parseInt(id));
   }
 
-  public changeStatus(url: string, id: string, val: boolean) {
+  public changeStatus(url: string, id: string, body: { val: boolean }) {
     const cond = url.split("/")[0];
     if (cond === "hold") {
-      return this.todo.holdTodo(parseInt(id), val);
+      return this.todo.holdTodo(parseInt(id), body.val);
     } else {
-      return this.todo.completeTodo(parseInt(id), val);
+      return this.todo.completeTodo(parseInt(id), body.val);
     }
   }
 }
