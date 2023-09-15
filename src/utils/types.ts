@@ -47,6 +47,24 @@ export interface ReqEditTodo extends BaseEditTodo {
   edit_date: Date;
 }
 
+export interface ReqPlace {
+  name: string;
+  marker: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
+}
+
+export interface Place extends ReqPlace {
+  id: number;
+}
+
+export interface UserPlace {
+  email: string;
+  place: Place[];
+}
+
 export interface Count {
   _id: ObjectId;
   id: string;

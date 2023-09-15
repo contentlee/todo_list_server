@@ -21,7 +21,6 @@ class LoginService {
     const {
       data: { email, name },
     } = await this.getUserInfo(access_token!);
-    console.log();
     const tmp_refresh_token = refresh_token?.split("//")[1];
 
     const userInfo = await this.user.getUserByEmail(email);
