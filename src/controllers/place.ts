@@ -37,3 +37,5 @@ class PlaceController {
     }
   };
 }
+
+export default PlaceController;
