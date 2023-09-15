@@ -1,11 +1,12 @@
 import { google } from "googleapis";
 import axios from "axios";
 
-import { UserModel } from "@models";
+import { PlaceModel, UserModel } from "@models";
 import { makeExpirationDate } from "@utils/date";
 
 class LoginService {
   private user = new UserModel();
+  private place = new PlaceModel();
 
   private oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -25,13 +26,17 @@ class LoginService {
 
     const userInfo = await this.user.getUserByEmail(email);
     if (userInfo) await this.user.changeToken(email, tmp_refresh_token!, makeExpirationDate(7));
-    else
+    else {
       await this.user.registerToken({
         name,
         email,
         refresh_token: tmp_refresh_token!,
         expiration_date: makeExpirationDate(7),
       });
+
+      await this.place.createUserPlace(email);
+    }
+
     return { access_token, refresh_token: tmp_refresh_token };
   }
 
