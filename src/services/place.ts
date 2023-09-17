@@ -10,7 +10,7 @@ class PlaceService {
   }
 
   public createUserPlace(email: string) {
-    return this.place.createUserPlace({ email, place: [] });
+    return this.place.createUserPlace({ email, places: [] });
   }
 
   public async resisterPlace(place: ReqPlace, email: string) {

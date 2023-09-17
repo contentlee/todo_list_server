@@ -5,7 +5,7 @@ class PlaceModel {
   private model = new BaseModel("place");
 
   public getPlaces(email: string) {
-    return this.model.getCollection().find({ email }).toArray();
+    return this.model.getCollection().findOne({ email });
   }
 
   public createUserPlace(userPlace: UserPlace) {
@@ -13,7 +13,7 @@ class PlaceModel {
   }
 
   public resisterPlace(place: Place, email: string) {
-    return this.model.getCollection().updateOne({ email }, { $addToSet: { place } });
+    return this.model.getCollection().updateOne({ email }, { $addToSet: { places: place } });
   }
 
   public deletePlace(id: number, email: string) {

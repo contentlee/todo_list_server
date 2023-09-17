@@ -34,7 +34,7 @@ class LoginService {
         expiration_date: makeExpirationDate(7),
       });
 
-      await this.place.createUserPlace({ email, place: [] });
+      await this.place.createUserPlace({ email, places: [] });
     }
 
     return { access_token, refresh_token: tmp_refresh_token };

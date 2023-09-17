@@ -29,7 +29,7 @@ export interface ReqTodo extends BaseTodo {
 export interface BaseEditTodo {
   title?: string;
   content?: string;
-  place?: {
+  places?: {
     marker: string;
     name: string;
     lat: number;
@@ -50,10 +50,8 @@ export interface ReqEditTodo extends BaseEditTodo {
 export interface ReqPlace {
   name: string;
   marker: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
+  lat: number;
+  lng: number;
 }
 
 export interface Place extends ReqPlace {
@@ -62,7 +60,7 @@ export interface Place extends ReqPlace {
 
 export interface UserPlace {
   email: string;
-  place: Place[];
+  places: Place[];
 }
 
 export interface Count {
