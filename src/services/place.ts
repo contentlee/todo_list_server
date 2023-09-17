@@ -9,10 +9,6 @@ class PlaceService {
     return this.place.getPlaces(email);
   }
 
-  public createUserPlace(email: string) {
-    return this.place.createUserPlace({ email, places: [] });
-  }
-
   public async resisterPlace(place: ReqPlace, email: string) {
     return await this.count.getCount().then(async (data) => {
       if (!data) throw new Error("id값을 찾지 못했습니다.");

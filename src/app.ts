@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { LoginRoute, PlaceRoute, TodoRoute, UserRoute } from "@routes";
 import { ErrorController } from "@controllers";
 import Database from "@libs/database";
+import CategoryRoute from "./routes/category";
 
 class App {
   private app: Express;
@@ -48,6 +49,9 @@ class App {
 
     const placeRouter = new PlaceRoute();
     this.app.use(placeRouter.router);
+
+    const categoryRouter = new CategoryRoute();
+    this.app.use(categoryRouter.router);
 
     this.app.use(ErrorController.log);
     this.app.use(ErrorController.error);

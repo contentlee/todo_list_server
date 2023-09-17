@@ -63,6 +63,17 @@ export interface UserPlace {
   places: Place[];
 }
 
+export interface ReqCategory {
+  name: string;
+}
+export interface ResCategory extends ReqCategory {
+  id: number;
+}
+export interface UserCategory {
+  email: string;
+  category: ResCategory[];
+}
+
 export interface Count {
   _id: ObjectId;
   id: string;

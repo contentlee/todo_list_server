@@ -1,12 +1,13 @@
 import { google } from "googleapis";
 import axios from "axios";
 
-import { PlaceModel, UserModel } from "@models";
+import { CategoryModel, PlaceModel, UserModel } from "@models";
 import { makeExpirationDate } from "@utils/date";
 
 class LoginService {
   private user = new UserModel();
   private place = new PlaceModel();
+  private category = new CategoryModel();
 
   private oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
@@ -35,6 +36,7 @@ class LoginService {
       });
 
       await this.place.createUserPlace({ email, places: [] });
+      await this.category.createUserCategory({ email, category: [] });
     }
 
     return { access_token, refresh_token: tmp_refresh_token };
