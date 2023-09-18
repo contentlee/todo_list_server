@@ -10,6 +10,7 @@ class LoginRoute extends BaseRoute {
     this.routes = [
       ["post", "/", [this.controller.login]],
       ["post", "/refresh", [this.controller.refreshToken]],
+      ["post", "/logout", [this.controller.logout]],
     ];
     this.route();
   }

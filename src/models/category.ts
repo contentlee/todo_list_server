@@ -17,7 +17,11 @@ class CategoryModel {
   }
 
   public deleteCategory(id: number, email: string) {
-    return this.model.getCollection().updateOne({ email }, { $pull: { id } });
+    return this.model.getCollection().updateOne({ email }, { $pull: { category: { id } } });
+  }
+
+  public removeUserCategory(email: string) {
+    return this.model.getCollection().deleteOne({ email });
   }
 }
 

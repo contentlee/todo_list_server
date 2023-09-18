@@ -50,6 +50,10 @@ class TodoModel {
   public deleteTodo(id: number, email: string) {
     return this.model.getCollection().deleteOne({ id, email });
   }
+
+  public removeUserTodo(email: string) {
+    return this.model.getCollection().deleteMany({ email });
+  }
 }
 
 export default TodoModel;

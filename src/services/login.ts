@@ -39,7 +39,7 @@ class LoginService {
       await this.category.createUserCategory({ email, category: [] });
     }
 
-    return { access_token, refresh_token: tmp_refresh_token };
+    return { access_token, refresh_token: tmp_refresh_token, email, name };
   }
 
   public async refreshToken(cookie: string) {
@@ -54,7 +54,11 @@ class LoginService {
               credentials: { access_token },
             } = await this.oauth2Client.refreshAccessToken();
 
-            return access_token;
+            const {
+              data: { email, name },
+            } = await this.getUserInfo(access_token!);
+
+            return { access_token, email, name };
           } else {
             throw new Error();
           }

@@ -7,6 +7,8 @@ class UserRoute extends BaseRoute {
   constructor() {
     super();
     this.path = "/user";
+    this.isAuth = true;
+    this.routes = [["delete", "/remove", [this.controller.removeUser]]];
     this.route();
   }
 }

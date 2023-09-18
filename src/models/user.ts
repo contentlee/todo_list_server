@@ -34,6 +34,10 @@ class UserModel {
       }
     );
   }
+
+  public removeUser(email: string) {
+    return this.model.getCollection().deleteOne({ email });
+  }
 }
 
 export default UserModel;

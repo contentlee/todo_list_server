@@ -53,6 +53,9 @@ class App {
     const categoryRouter = new CategoryRoute();
     this.app.use(categoryRouter.router);
 
+    const userRouter = new UserRoute();
+    this.app.use(userRouter.router);
+
     this.app.use(ErrorController.log);
     this.app.use(ErrorController.error);
   }
