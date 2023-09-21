@@ -1,5 +1,6 @@
+import Database from "@libs/database";
 import { BaseModel } from "@models";
-import { ReqEditTodo, ReqTodo } from "@utils/types";
+import { ReqEditTodo, ReqTodo, ResTodo } from "@utils/types";
 
 class TodoModel {
   private model = new BaseModel("todo");
@@ -53,6 +54,10 @@ class TodoModel {
 
   public removeUserTodo(email: string) {
     return this.model.getCollection().deleteMany({ email });
+  }
+
+  public getUserTodos(email: string) {
+    return this.model.getCollection<ResTodo>().find({ email }).toArray();
   }
 }
 

@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 export interface BaseTodo {
   title: string;
@@ -22,6 +22,26 @@ export interface ReqTodo extends BaseTodo {
   date: Date;
   edit_date: Date;
   write_date: Date;
+  is_completed: boolean;
+  is_held: boolean;
+}
+
+export interface ResTodo {
+  id: string;
+  date: string;
+  title: string;
+  content: string;
+  place: {
+    marker: string;
+    name: string;
+    lat: number;
+    lng: number;
+  };
+  category: string;
+  name: string;
+  email: string;
+  edit_date: string;
+  write_date: string;
   is_completed: boolean;
   is_held: boolean;
 }

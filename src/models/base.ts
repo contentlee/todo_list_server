@@ -1,4 +1,5 @@
 import Database from "@libs/database";
+import { Document } from "mongodb";
 
 class BaseModel {
   private collection;
@@ -7,8 +8,8 @@ class BaseModel {
     this.collection = collection;
   }
 
-  getCollection() {
-    return Database.db.collection(this.collection);
+  getCollection<T extends Document>() {
+    return Database.db.collection<T>(this.collection);
   }
 }
 

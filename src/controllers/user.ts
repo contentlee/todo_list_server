@@ -16,6 +16,17 @@ class UserController {
       next(err);
     }
   };
+
+  public getUserChartAll = (req: Request, res: Response, next: NextFunction) => {
+    try {
+      this.service
+        .getUserChartAll(req.body.email)
+        .then((data) => res.status(200).json({ message: "데이터를 가져오는데 성공하였습니다.", data }))
+        .catch(() => res.status(403).json({ message: "데이터를 가져오는데 실패하였습니다." }));
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 export default UserController;
