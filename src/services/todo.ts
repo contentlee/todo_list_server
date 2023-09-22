@@ -58,7 +58,7 @@ class TodoService {
   }
 
   public changeStatus(url: string, id: string, body: { val: boolean; email: string }) {
-    const cond = url.split("/")[0];
+    const cond = url.split("/")[2];
     if (cond === "hold") {
       return this.todo.holdTodo(parseInt(id), body.val, body.email);
     } else {
