@@ -1,5 +1,5 @@
 import { CountModel, TodoModel } from "@models";
-import { makeOneDay, setStringToDate } from "@utils/date";
+import { makeOneDay, makeToday, setStringToDate } from "@utils/date";
 import { PreReqEditTodo, PreReqTodo } from "@utils/types";
 
 class TodoService {
@@ -18,13 +18,14 @@ class TodoService {
 
   public async createTodo(todo: PreReqTodo) {
     const date = setStringToDate(todo.date);
+    const today = makeToday();
     const tmp = {
       ...todo,
       date,
       is_held: false,
       is_completed: false,
-      edit_date: new Date(),
-      write_date: new Date(),
+      edit_date: today,
+      write_date: today,
     };
 
     return await this.count
@@ -45,7 +46,7 @@ class TodoService {
 
   public editTodo(id: string, todo: PreReqEditTodo) {
     const tmp: any = {
-      edit_date: new Date(),
+      edit_date: makeToday(),
       ...todo,
     };
     if (tmp.date) tmp.date = setStringToDate(tmp.date);

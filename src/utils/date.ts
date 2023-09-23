@@ -1,3 +1,10 @@
+export const makeToday = (val: string | Date | number = new Date().getTime()) => {
+  const date = new Date(val);
+  const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  return new Date(utc + KR_TIME_DIFF);
+};
+
 export const makeOneDay = (date: string) => {
   const year = parseInt(date.slice(0, 4));
   const month = parseInt(date.slice(4, 6));
@@ -15,7 +22,7 @@ export const setStringToDate = (date: string) => {
 };
 
 export const makeExpirationDate = (expiration: number) => {
-  const today = new Date();
+  const today = makeToday();
   const expiration_date = new Date(today);
   expiration_date.setDate(today.getDate() + expiration);
 

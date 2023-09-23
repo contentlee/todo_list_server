@@ -1,3 +1,4 @@
+import { makeToday } from "./date";
 import { ResTodo } from "./types";
 
 export const makeChart = (data: ResTodo[]) => {
@@ -41,7 +42,7 @@ export const makeChart = (data: ResTodo[]) => {
 
   data.forEach((item) => {
     const date = new Date(item.date);
-    const [y, m, d] = [date.getFullYear(), date.getMonth(), date.getDate()];
+    const [y, m, d] = [date.getFullYear(), date.getMonth(), date.getDate() - 1];
 
     if (item.is_completed) dc++;
     else if (item.is_held) dh++;
@@ -65,7 +66,7 @@ export const makeChart = (data: ResTodo[]) => {
       dh = 0;
     }
 
-    const today = new Date();
+    const today = makeToday();
     const [ty, tm, td] = [today.getFullYear(), today.getMonth(), today.getDate()];
 
     if (ty === y) {

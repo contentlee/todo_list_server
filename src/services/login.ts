@@ -2,7 +2,7 @@ import { google } from "googleapis";
 import axios from "axios";
 
 import { CategoryModel, PlaceModel, UserModel } from "@models";
-import { makeExpirationDate } from "@utils/date";
+import { makeExpirationDate, makeToday } from "@utils/date";
 
 class LoginService {
   private user = new UserModel();
