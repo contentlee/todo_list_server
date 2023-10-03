@@ -14,15 +14,14 @@ class CategoryService {
   }
 
   public async resisterCategory(name: string, email: string) {
-    return await this.count.getCount().then(async (data) => {
+    try {
+      const data = await this.count.getCount();
       if (!data) throw new Error("id 값을 찾지 못했습니다");
-      return await this.count
-        .increaseCount()
-        .then(() => this.model.resisterCategory({ id: data.count + 1, name }, email))
-        .catch(() => {
-          throw new Error("id값 생성에 실패했습니다.");
-        });
-    });
+      await this.count.increaseCount();
+      return this.model.resisterCategory({ id: data.count + 1, name }, email);
+    } catch {
+      throw new Error("id값 생성에 실패했습니다.");
+    }
   }
 
   public deleteCategory(id: string, email: string) {

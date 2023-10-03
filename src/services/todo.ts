@@ -28,20 +28,15 @@ class TodoService {
       write_date: today,
     };
 
-    return await this.count
-      .getCount()
-      .then(async (data) => {
-        if (!data) throw new Error("id값을 찾지 못했습니다.");
-        return await this.count
-          .increaseCount()
-          .then(() => this.todo.createTodo(data.count + 1, tmp))
-          .catch(() => {
-            throw new Error("id값 생성에 실패했습니다.");
-          });
-      })
-      .catch(() => {
-        throw new Error("id값을 찾지 못했습니다.");
-      });
+    try {
+      const data = await this.count.getCount();
+
+      if (!data) throw new Error("id값을 찾지 못했습니다.");
+      await this.count.increaseCount();
+      await this.todo.createTodo(data.count + 1, tmp);
+    } catch {
+      throw new Error("id값을 찾지 못했습니다.");
+    }
   }
 
   public editTodo(id: string, todo: PreReqEditTodo) {

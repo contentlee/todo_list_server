@@ -8,28 +8,24 @@ class UserService {
   private category = new CategoryModel();
 
   public async removeUser(email: string) {
-    return await this.user
-      .removeUser(email)
-      .then(async () => {
-        await this.todo.removeUserTodo(email);
-        await this.place.removeUserPlace(email);
-        await this.category.removeUserCategory(email);
-      })
-      .catch(() => {
-        throw new Error("사용자 삭제에 실패하였습니다.");
-      });
+    try {
+      await this.user.removeUser(email);
+      await this.todo.removeUserTodo(email);
+      await this.place.removeUserPlace(email);
+      await this.category.removeUserCategory(email);
+    } catch {
+      throw new Error("사용자 삭제에 실패하였습니다.");
+    }
   }
 
   public async getUserChartAll(email: string) {
-    return await this.todo
-      .getUserTodos(email)
-      .then((data) => {
-        if (data.length) return makeChart(data);
-        else return [];
-      })
-      .catch(() => {
-        throw new Error("사용자 통계를 가져오는데 실패하였습니다.");
-      });
+    try {
+      const data = await this.todo.getUserTodos(email);
+      if (data.length) return makeChart(data);
+      else return [];
+    } catch {
+      throw new Error("사용자 통계를 가져오는데 실패하였습니다.");
+    }
   }
 }
 

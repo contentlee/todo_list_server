@@ -45,28 +45,25 @@ class LoginService {
   public async refreshToken(cookie: string) {
     const refresh_token = cookie.split("=")[1];
 
-    if (refresh_token) {
-      return this.authRefresh(refresh_token)
-        .then(async (isPossible) => {
-          if (isPossible) {
-            this.oauth2Client.setCredentials({ refresh_token: "1//" + refresh_token });
-            const {
-              credentials: { access_token },
-            } = await this.oauth2Client.refreshAccessToken();
+    try {
+      if (refresh_token) {
+        const isPossible = await this.authRefresh(refresh_token);
+        if (isPossible) {
+          this.oauth2Client.setCredentials({ refresh_token: "1//" + refresh_token });
+          const {
+            credentials: { access_token },
+          } = await this.oauth2Client.refreshAccessToken();
 
-            const {
-              data: { email, name },
-            } = await this.getUserInfo(access_token!);
+          const {
+            data: { email, name },
+          } = await this.getUserInfo(access_token!);
 
-            return { access_token, email, name };
-          } else {
-            throw new Error();
-          }
-        })
-        .catch(() => {
+          return { access_token, email, name };
+        } else {
           throw new Error();
-        });
-    } else {
+        }
+      }
+    } catch {
       throw new Error();
     }
   }

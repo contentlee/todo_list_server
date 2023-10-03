@@ -8,8 +8,8 @@ class CountModel {
     this.id = id;
   }
 
-  public async getCount() {
-    return await this.model.getCollection().findOne({ id: this.id });
+  public getCount() {
+    return this.model.getCollection().findOne({ id: this.id });
   }
 
   public async increaseCount() {
